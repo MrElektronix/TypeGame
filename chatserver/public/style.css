@@ -1,0 +1,11 @@
+body{
+    background-color:dimgrey
+}
+
+#container{
+    background-color: aliceblue;
+    width: 800px;
+    margin: auto;
+    border: 2px solid black;
+    padding:  10px;
+}
