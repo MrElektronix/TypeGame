@@ -42,6 +42,10 @@ class Object {
     return this._controls;
   }
 
+  addSpeed(speed) {
+    return speed;
+  }
+
   /*
   attachToObject(ObjectToGetAttached) {
     this.x = ObjectToGetAttached.x;
@@ -65,9 +69,5 @@ class Object {
     }
   }
   */
-
-
-
-
 
 }
