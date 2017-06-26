@@ -8,7 +8,7 @@ var users = [];
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+  res.sendFile(__dirname + "/public/typing/index.html");
 });
 
 io.on('connect', (socket) => {
@@ -19,7 +19,8 @@ io.on('connect', (socket) => {
     } else {
       users.push(data);
       socket.emit('userSet', {
-        username: data
+        playerName: data,
+
       });
     }
   })

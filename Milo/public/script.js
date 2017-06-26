@@ -1,101 +1,65 @@
-var textbox;
-var input;
-var buttonPushed;
-var Words, randomWord;
-var h, t, i;
-var game, player, playerSpeed, typeGame, gameText;
-var canvas, context;
+const socket = io();
+
+let id;
+let users;
+
+
+socket.on('joinGame', (data) => {
+    id = data.id;
+    users = data.players;
+    Init();
+});
+
+socket.on('new player connected',(data) => {
+
+  users.push(data);
+  console.log(data);
+
+});
+
+
+
+let input;
+let game, player, playerSpeed;
+let canvas, context;
 
 key = [];
 
 document.addEventListener("keydown", function(e) {
   key[e.keyCode] = true;
-  if (buttonPushed == 3) {
-    buttonPushed = 1;
-  }
 });
 
 document.addEventListener("keyup", function(e) {
   delete key[e.keyCode];
-  buttonPushed = 3;
 });
+  
 
-function Init() {
-  playerSpeed = 0;
+
+let Init = () => {
   canvas = document.getElementById("canvas");
-  context = canvas.getContext('2d');
+  context = canvas.getContext("2d");
+  playerSpeed = 0;
 
-  textbox = document.getElementById("textbox");
   input = new Input(key);
 
   game = new Game(1200, 600, canvas, context);
-  player = new Rectangle(30, 30, 30, 30, "", true);
-  typeGame = new TypeGame();
-  gameText = new GameText(canvas, context);
+  player = new Rectangle(30, 100, 30, 30, "", true);
+
+  socket.emit("makePlayer", {
+    id: id,
+    player: player,
+
+  });
 
   game.addGameObject(player);
 
-  DisplayWord();
   animate();
-}
+};
 
 
 function animate() {
   requestAnimationFrame(animate);
-  Keyboard();
-  CheckLetters();
 
   game.update();
-  moveForward(player, playerSpeed);
-
-  gameText.Text(Words[randomWord]);
 }
 
-function moveForward(obj, speed) {
-  obj.x += speed;
-}
-
-
-function Keyboard() {
-  if (input.onKeyDown("enter")) {
-    if (buttonPushed == 1) {
-      CheckWord();
-      buttonPushed = 2;
-    }
-  } else {
-    console.log("not enter");
-  }
-}
-
-function CheckLetters() {
-  let i = 0;
-  let j = 1;
-  let substring = textbox.value.substr(i, j);
-  let substring2 = Words[randomWord].substr(i, j)
-
-  if (substring == substring2) {
-    console.log("word in word");
-
-  } else {
-
-  }
-}
-
-
-function DisplayWord() {
-  Words = ["hello", "apple", "orange", "peer", "world", "book", "shelf"];
-  randomWord = Math.floor(Math.random() * Words.length);
-  gameText.Text(Words[randomWord]);
-}
-
-function CheckWord() {
-  if (typeGame.checkWord(textbox, Words[randomWord])) {
-    DisplayWord();
-    textbox.value = "";
-    playerSpeed += player.addSpeed(1);
-  } else {
-    textbox.value = "";
-  }
-}
-
-Init();
