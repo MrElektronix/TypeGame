@@ -1,15 +1,18 @@
 {
   "name": "chatserver",
   "version": "1.0.0",
-  "description": "voorbeeld chatserver",
+  "description": "chatserver",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "niels",
-  "license": "ISC",
-  
   "dependencies": {
-    "express": "^4.15.3"
-  }
+    "express": "^4.15.3",
+    "nodemon": "^1.11.0",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "koom",
+    "start": "node server.js"
+  },
+  "author": "sebastiaan de Jongh",
+  "license": "ISC"
 }
