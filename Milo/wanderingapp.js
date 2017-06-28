@@ -8,7 +8,7 @@ const users = [];
 app.use(express.static('public/'));
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + "/public/wandering/index.html");
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 io.on('connect', (socket) => {
@@ -20,11 +20,24 @@ io.on('connect', (socket) => {
   });
 
   socket.on('makePlayer', (data) => {
+
     users.push(data);
+    //socket.emit('currentPlayers', users );
+    // iemand is nieuw... zijn data staat nu in de array
+      // 1 deze array sturen we ALLEEN naar deze socket zodat hij iedereen heeft
+      // 2 we laten iedereen behalve socket weten dat 'data' nieuw is
     io.emit('new player connected', data);
-    console.log(data);
+    socket.on('keyPress', (data) =>{
+
+
+    });
+    //console.log(data);
     console.log("users: " + users.length);
+
+
+
   });
+
 
   socket.on('disconnect', () =>{
       let i = users.indexOf(socket.id);

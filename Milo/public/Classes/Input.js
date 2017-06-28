@@ -83,7 +83,6 @@ class Input {
       case "enter":
         if (this.key[enter]) {
           return true;
-          console.log("hello");
         }
         break;
       case "shift":
@@ -110,6 +109,7 @@ class Input {
         if (this.key[spacebar]) {
           return true;
         }
+        break;
       case "left_arrow":
         if (this.key[left_arrow]) {
           return true;
@@ -132,6 +132,11 @@ class Input {
         break;
 
         /*------------Numbers-----------------*/
+     case "zero":
+        if (this.key[zero]) {
+            return true;
+        }
+        break;
       case "one":
         if (this.key[one]) {
           return true;

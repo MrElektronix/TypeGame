@@ -31,4 +31,9 @@ class Game {
   addGameObject(obj) {
     this.gameObjects.push(obj);
   }
+
+  removeGameObject(obj) {
+      let a = this.gameObjects.indexOf(obj);
+      this.gameObjects.splice(a, 1);
+  }
 }
