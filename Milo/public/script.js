@@ -7,7 +7,7 @@ let users;
 socket.on('joinGame', (data) => {
     id = data.id;
     users = data.players;
-    Init();
+    Init(data);
 
     users.forEach(player => {
         addPlayer(player);
@@ -17,16 +17,26 @@ socket.on('joinGame', (data) => {
 
 let addPlayer = (data) => {
     const {player}  = data;
-    users.push(data);
-    game.addGameObject(new Rectangle(player.x, player.y, player.width, player.height, "", true));
+    game.addGameObject(new Rectangle(player.id, player.x, player.y, player.width, player.height, player.color, player.filled));
 };
 
 socket.on('new player connected',(data) => {
     addPlayer(data);
 });
 
-socket.on('keyPress', ()=>{
-    keyBoard();
+socket.on('player move', obj =>{
+    for (let i = 0; i < users.length; i++) {
+        if(users[i].id === obj.id) {
+            users[i] = obj;
+        }
+    }
+    for (let i = 0; i < game.gameObjects.length; i++) {
+        if(game.gameObjects[i].id === obj.id) {
+
+            game.gameObjects[i].x = obj.player.x;
+            game.gameObjects[i].y = obj.player.y;
+        }
+    }
 });
 
 
@@ -45,14 +55,14 @@ document.addEventListener("keyup", (e) => {
 });
 
 
-let Init = () => {
+let Init = (data) => {
   canvas = document.getElementById("canvas");
   context = canvas.getContext("2d");
 
   input = new Input(key);
 
   game = new Game(1200, 600, canvas, context);
-  player = new Rectangle(Math.floor(Math.random() * 300), 100, 30, 30, "", true);
+  player = new Rectangle(data.id, Math.floor(Math.random() * 300), 100, 30, 30, "", true);
 
 
   socket.emit("makePlayer", {
@@ -91,7 +101,10 @@ let keyBoard = () => {
 
 
 
-    socket.emit('keyPress', player);
+    socket.emit('keyPress', {
+        id: id,
+        player: player
+    });
 
 
 

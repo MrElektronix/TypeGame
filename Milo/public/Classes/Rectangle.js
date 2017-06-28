@@ -1,7 +1,9 @@
 class Rectangle extends Object {
-  constructor(x, y, width, height, color, filled) {
+  constructor(id, x, y, width, height, color, filled) {
     super(x, y, width, height, color);
     //this.context = context;
+
+      this.id = id;
     this.filled = filled || false;
   }
 

@@ -27,16 +27,15 @@ io.on('connect', (socket) => {
       // 1 deze array sturen we ALLEEN naar deze socket zodat hij iedereen heeft
       // 2 we laten iedereen behalve socket weten dat 'data' nieuw is
     io.emit('new player connected', data);
-    socket.on('keyPress', (data) =>{
-
-
-    });
     //console.log(data);
     console.log("users: " + users.length);
 
 
 
   });
+    socket.on('keyPress', (data) =>{
+        io.emit('player move', data);
+    });
 
 
   socket.on('disconnect', () =>{
