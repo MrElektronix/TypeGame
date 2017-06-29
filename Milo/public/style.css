@@ -13,3 +13,51 @@
   height: 25px;
   font-size: 25px;
 }
+
+.input-fields{
+    font-size: x-large;
+    text-align: center;
+    display: block;
+    margin: auto;
+    margin-top: 100%;
+}
+
+.join-game-buttons{
+    font-size: x-large;
+    display: block;
+    margin: auto;
+    margin-top: 20%;
+}
+
+#container {
+    overflow: hidden;
+    width: 1440px;
+    margin: auto;
+}
+
+.playercontainer{
+    width: 350px;
+    height: 600px;
+    margin-right: 10px;
+}
+
+#firstplayer{
+    background-color: red;
+    float: left;
+
+}
+
+#secondplayer{
+    background-color: limegreen;
+    float: left;
+}
+
+#thirdplayer{
+    background-color: cyan;
+    float: left;
+}
+
+#fourthplayer{
+    background-color: purple;
+    float: left;
+}
