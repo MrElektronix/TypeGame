@@ -15,6 +15,19 @@ socket.on('joinGame', (data) => {
 
 });
 
+socket.on('playerDisconnect', obj =>{
+    for (let i = 0; i < users.length; i++) {
+        if(users[i].id === obj.id) {
+            users.splice(i, 1);
+        }
+    }
+    for (let i = 0; i < game.gameObjects.length; i++) {
+        if(game.gameObjects[i].id === obj.id) {
+           game.removeGameObject(obj.id);
+        }
+    }
+});
+
 let addPlayer = (data) => {
     const {player}  = data;
     game.addGameObject(new Rectangle(player.id, player.x, player.y, player.width, player.height, player.color, player.filled));

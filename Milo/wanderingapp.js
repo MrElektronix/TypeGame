@@ -42,6 +42,10 @@ io.on('connect', (socket) => {
       let i = users.indexOf(socket.id);
       users.splice(i, 1);
       console.log("users-left: " + users.length);
+      socket.broadcast.emit("playerDisconnect", {
+          id: socket.id,
+      });
+
   });
 
 });
