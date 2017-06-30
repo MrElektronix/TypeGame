@@ -20,6 +20,7 @@ class Rectangle extends Object {
       context.fillStyle = this.color;
       context.fillRect(this.x, this.y, this.width, this.height);
     } else {
+      context.beginPath();
       context.rect(this.x, this.y, this.width, this.height);
       context.stroke();
     }

@@ -1,13 +1,13 @@
 class GameText {
   constructor(canvas, context) {
+    this.canvas = canvas;
     this.context = context;
   }
 
   Text(message) {
-    this.context.beginPath();
     this.context.font = "30px Arial";
-    this.context.fillText(message || " ", (canvas.width / 2) - 80, canvas.height - 100);
-  }
+    this.context.fillText(message || " ", ((this.canvas.width / 2) - 80), (this.canvas.height - 100));
+  };
 
 
 

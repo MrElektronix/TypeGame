@@ -28,6 +28,12 @@ socket.on('playerDisconnect', obj =>{
     }
 });
 
+
+socket.on('displayingWord', (data) => {
+    gameText.Text(data);
+});
+
+
 let addPlayer = (data) => {
     const {player}  = data;
     game.addGameObject(new Rectangle(player.id, player.x, player.y, player.width, player.height, player.color, player.filled));
@@ -48,23 +54,33 @@ socket.on('player move', obj =>{
 
             game.gameObjects[i].x = obj.player.x;
             game.gameObjects[i].y = obj.player.y;
+
+            moveForward(obj.player.x);
         }
+
     }
 });
 
 
 let input;
-let game, player;
+let game, player, typeGame, gameText, textbox;
 let canvas, context;
+let buttonPushed;
+let Words, randomWord, newWord;
+
 
 key = [];
 
 document.addEventListener("keydown", (e) => {
   key[e.keyCode] = true;
+
+  if(buttonPushed === 3) buttonPushed = 1;
+
 });
 
 document.addEventListener("keyup", (e) => {
   delete key[e.keyCode];
+  buttonPushed = 3;
 });
 
 
@@ -72,61 +88,76 @@ let Init = (data) => {
   canvas = document.getElementById("canvas");
   context = canvas.getContext("2d");
 
+  textbox = document.getElementById("textbox");
   input = new Input(key);
 
   game = new Game(1200, 600, canvas, context);
   player = new Rectangle(data.id, Math.floor(Math.random() * 300), 100, 30, 30, "", true);
-
+  typeGame = new TypeGame();
+  gameText = new GameText(canvas, context);
 
   socket.emit("makePlayer", {
     id: id,
     player: player,
   });
 
+  DisplayWord();
   animate();
 };
 
 
 let animate = () => {
   requestAnimationFrame(animate);
-  keyBoard();
+  moveForward();
+  KeyBoard();
+
   game.update();
+  gameText.Text(newWord);
+};
+
+let KeyBoard = () => {
+    if (input.onKeyDown("enter")) {
+        if (buttonPushed === 1) {
+            CheckWord();
+        }
+        buttonPushed = 2;
+    }
+};
+
+let DisplayWord = () => {
+    Words = ["hello", "apple", "orange", "peer", "world", "book", "shelf"];
+    randomWord = Math.floor(Math.random() * Words.length);
+    newWord = Words[randomWord];
+
+    gameText.Text(newWord);
+
+    moveForward();
+    socket.emit("word", {
+        word: newWord,
+    });
+
+};
+
+let CheckWord = () =>{
+    if (typeGame.checkWord(textbox, newWord)) {
+        DisplayWord();
+
+        typeGame.clearTextField(textbox);
+    } else {
+        typeGame.clearTextField(textbox);
+    }
 };
 
 
-let keyBoard = () => {
-    let speed = 5;
-    if(input.onKeyDown("w")) {
-        player.y -= speed;
-    }
 
-    if(input.onKeyDown("s")) {
-        player.y += speed;
-    }
+let moveForward = () => {
+    player.x += 5;
 
-    if(input.onKeyDown("a")) {
-        player.x -= speed;
-    }
-
-    if(input.onKeyDown("d")) {
-        player.x += speed;
-    }
-
-
-
-    socket.emit('keyPress', {
+    socket.emit('moving', {
         id: id,
         player: player
     });
-
-
-
-
-
-
-    /*
-    socket.emit('keyPress', data);
-    */
 };
+
 
 
