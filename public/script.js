@@ -29,10 +29,6 @@ socket.on('playerDisconnect', obj =>{
 });
 
 
-socket.on('displayingWord', (data) => {
-    gameText.Text(data);
-});
-
 
 let addPlayer = (data) => {
     const {player}  = data;
@@ -55,7 +51,7 @@ socket.on('player move', obj =>{
             game.gameObjects[i].x = obj.player.x;
             game.gameObjects[i].y = obj.player.y;
 
-            moveForward(obj.player.x);
+            //moveForward(obj.player.x);
         }
 
     }
@@ -108,7 +104,7 @@ let Init = (data) => {
 
 let animate = () => {
   requestAnimationFrame(animate);
-  moveForward();
+  //moveForward();
   KeyBoard();
 
   game.update();
@@ -131,7 +127,7 @@ let DisplayWord = () => {
 
     gameText.Text(newWord);
 
-    moveForward();
+    //moveForward();
     socket.emit("word", {
         word: newWord,
     });
