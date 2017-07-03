@@ -3,6 +3,8 @@ const app = express();
 
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+
+const port = process.env.PORT || 5000;
 const users = [];
 
 app.use(express.static('public/'));
@@ -31,24 +33,24 @@ io.on('connect', (socket) => {
   });
 
 
-  socket.on('moving', (data) =>{
+  socket.on('moving', (data) => {
     socket.broadcast.emit('player move', data);
   });
 
 
-  socket.on('disconnect', () =>{
-      let i = users.indexOf(socket.id);
-      users.splice(i, 1);
-      console.log("users-left: " + users.length);
-      socket.broadcast.emit("playerDisconnect", {
-          id: socket.id,
-      });
+  socket.on('disconnect', () => {
+    let i = users.indexOf(socket.id);
+    users.splice(i, 1);
+    console.log("users-left: " + users.length);
+    socket.broadcast.emit("playerDisconnect", {
+      id: socket.id,
+    });
 
   });
 
 });
 
 
-server.listen(3000, () => {
-  console.log("listening on port 3000");
+server.listen(port, () => {
+  console.log("listening on port " + port);
 });
